@@ -23,3 +23,15 @@ def get_hit_count():
 def hello():
     count = get_hit_count()
     return 'Hello World! I have been seen {} times.\n'.format(count)
+
+@app.route('/isPrime/<number>')
+def isPrime(number):
+    for i in range(2,number):
+        if number % i == 0:
+            return '{} is not a prime number.\n'.format(number)
+    cache.lpush(primes, number)
+    return '{} is a prime number.\n'.format(number)
+
+@app.route('/primesStored')
+def stored_primes():
+    
