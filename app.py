@@ -27,14 +27,18 @@ def hello():
 
 @app.route('/isPrime/<number>/')
 def isPrime(number):
-    print('searching for prime')
-    for i in range(2,int(sqrt(int(number)))):
-        if int(number) % i == 0 or i == int(number):
-            return '{} is not a prime number.\n'.format(number)
-    cache.lrem('primes', 0, number)
-    cache.lpush('primes', number)
-    return '{} is a prime number.\n'.format(number)
-
+    try:
+        if int(number) > 1:
+            for i in range(2,int(sqrt(int(number)))):
+                if int(number) % i == 0 or i == int(number):
+                    return '{} is not a prime number.\n'.format(number)
+            cache.lrem('primes', 0, number)
+            cache.lpush('primes', number)
+            return '{} is a prime number.\n'.format(number)
+        else:
+            return'please enter a number more than 1\n'
+    except ValueError:
+        return'Please enter a number as digits.\n'
 @app.route('/primesStored/')
 def stored_primes():
     prime_string = ' \n'
